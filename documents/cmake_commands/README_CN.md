@@ -323,63 +323,41 @@ install_celix_targets(celix NAMESPACE Celix:: DESTINATION share/celix/cmake FILE
 - PROJECT_NAME：用于设置share子目录的项目名称。默认是CMake项目名称。
 - DESTINATION：安装Celix目标 CMake文件的（相对）位置。默认是 share/<PROJECT_NAME>/cmake。
 
-# Celix Containers
-Celix containers are executables preconfigured to start a Celix framework with a set of configuration properties 
-and a set of bundles to install or install and start. 
+# Celix 容器
+Celix 容器是用来按照预先配置的属性拉起 Celix 框架实例的可执行文件，它会安装或安装并启动一组预先配置的捆绑包。
 
 ## add_celix_container
-Add a Celix container, consisting out of a selection of bundles and a Celix launcher.
-Celix containers can be used to start a Celix framework together with a selection of bundles.
+添加一个Celix容器，它由一组选定的捆绑包和一个Celix启动器组成。
+Celix容器可用于启动一个Celix框架以及一组捆绑包。
 
-A Celix container will be build in `<cmake_build_dir>/deploy[/<group_name>]/<celix_container_name>`.
-Use the `<celix_container_name>` executable to run the containers.
+Celix容器会在 `<cmake_build_dir>/deploy[/<group_name>]/<celix_container_name>` 中构建。
+可使用 `<celix_container_name>` 可执行文件来运行容器。
 
-There are three variants of 'add_celix_container':
-- If no launcher is specified a custom Celix launcher will be generated. This launcher also contains the configured properties.
-- If a LAUNCHER_SRC is provided a Celix launcher will be build using the provided sources. Additional sources can be added with the
-  CMake 'target_sources' command.
-- If a LAUNCHER (absolute path to a executable of CMake `add_executable` target) is provided that will be used as Celix launcher.
+'add_celix_container'有三种变体：
+- 如果未指定启动器，则会生成一个自定义的Celix启动器。这个启动器还包含了配置的属性。
+- 如果提供了LAUNCHER_SRC，则将使用提供的源代码构建一个Celix启动器。可以使用CMake的'target_sources'命令添加额外的源代码。
+- 如果提供了一个LAUNCHER（CMake `add_executable` 目标的绝对路径），那么它将作为Celix启动器使用。
 
-Creating a Celix containers using 'add_celix_container' will lead to a CMake executable target (expect if a LAUNCHER is used).
-These targets can be used to run/debug Celix containers from a IDE (if the IDE supports CMake).
+使用'add_celix_container'创建一个Celix容器会生成一个CMake可执行目标（除非设置了LAUNCHER）。
+这些目标可用于从IDE（如果IDE支持CMake）运行/调试Celix容器。
 
-Optional Arguments:
-- COPY: With this option the bundles used in the container will be copied in and configured for a bundles directory
-  next to the container executable. Only one of the COPY or NO_COPY options can be provided.
-  Default is COPY.
-- NO_COPY: With this option the bundles used in the container will be configured using absolute paths to the bundles
-  zip files. Only one of the COPY or NO_COPY options can be provided.
-  Default is COPY.
-- CXX: With this option the generated Celix launcher (if used) will be a C++ source.
-  This ensures that the Celix launcher is linked against stdlibc++. Only one of the C or CXX options can be provided.
-  Default is CXX
-- C: With this option the generated Celix launcher (if used) will be a C source. Only one of the C or CXX options can
-  be provided.
-  Default is CXX
-- FAT: With this option only embedded bundles are allowed to be added to the container. Ensuring a container executable
-  this is not dependent on external bundle zip files.
-  Note that this option does not change anything to the container, it just ensure that all added bundles are embedded
-  bundles.
-- USE_CONFIG: With this option the config properties are generated in a 'config.properties' instead of embedded in
-  the Celix launcher.
-- GROUP: If configured the build location will be prefixed the GROUP. Default is empty.
-- NAME: The name of the executable. Default is <celix_container_name>. Only useful for generated/LAUNCHER_SRC
-  Celix launchers.
-- DIR: The base build directory of the Celix container. Default is `<cmake_build_dir>/deploy`.
-- BUNDLES: A list of bundles for the Celix container to install and start.
-  These bundle will be configured for run level 3. See 'celix_container_bundles' for more info.
-- INSTALL_BUNDLES: A list of bundles for the Celix container to install (but not start).
-- EMBEDDED_BUNDLES: A list of bundles to embed in the Celix container (inject as binary in the executable) and
-  to install and start for the Celix container.
-  See `celix_target_embedded_bundle` for more info about embedded bundles.
-- INSTALL_EMBEDDED_BUNDLES: A list of bundles to embed in the Celix container (inject as binary in the executable) and
-  to install (but not start) for the Celix container.
-  See `celix_target_embedded_bundle` for more info about embedded bundles.
-- PROPERTIES: A list of configuration properties, these can be used to configure the Celix framework and/or bundles.
-  Normally this will be EMBEDED_PROPERTIES, but if the USE_CONFIG option is used this will be RUNTIME_PROPERTIES.
-  See the framework library or bundles documentation about the available configuration options.
-- EMBEDDED_PROPERTIES: A list of configuration properties which will be used in the generated Celix launcher.
-- RUNTIME_PROPERTIES: A list of configuration properties which will be used in the generated config.properties file.
+可选参数：
+- COPY：使用此选项，容器中的捆绑包将被复制到容器可执行文件旁的一个目录，且容器将以文件名从此目录加载捆绑包。 不能同时提供 COPY 或 NO_COPY 选项。默认为 COPY。
+- NO_COPY：使用此选项，容器将使用捆绑包 zip 文件的绝对路径从捆绑包的安装位置加载捆绑包。不能同时提供 COPY 或 NO_COPY 选项。默认为 COPY。
+- CXX：使用此选项，Celix 启动器将使用 C++ 生成（如果需要生成）。这确保 Celix 启动器链接到 stdlibc++。只能提供 C 或 CXX 中的一个选项。默认为 CXX。
+- C：使用此选项，Celix 启动器将使用 C 生成（如果需要生成）。只能提供 C 或 CXX 中的一个选项。默认为 CXX。
+- FAT：使用此选项，将只允许向容器添加有内嵌捆绑包。确保容器可执行文件不依赖于外部的捆绑包 zip 文件。请注意，此选项不会改变容器的任何内容。
+- USE_CONFIG：使用此选项，配置属性将在 'config.properties' 中生成，而不是嵌入到 Celix 启动器中。
+- GROUP：若配置，构建位置将以 GROUP 为前缀。默认为空。
+- NAME：可执行文件的名称。默认为 <celix_container_name>。只对自动生成或从 LAUNCHER_SRC 生成的Celix 启动器有用。
+- DIR：Celix 容器的基本构建目录。默认为 `<cmake_build_dir>/deploy`。
+- BUNDLES：Celix 容器中要安装并启动的捆绑包列表。这些捆绑包将被配置为运行级别3。有关更多信息，请参阅 'celix_container_bundles'。
+- INSTALL_BUNDLES：Celix 容器中要安装（但不启动）的捆绑包列表。
+- EMBEDDED_BUNDLES：要嵌入到 Celix 容器可执行文件中，并被 Celix 容器安装和启动的捆绑包列表。关于内嵌捆绑包的更多信息，请参阅 `celix_target_embedded_bundle`。
+- INSTALL_EMBEDDED_BUNDLES：要嵌入到 Celix 容器可执行文件中，并被 Celix 容器安装（但不启动）的捆绑包列表。关于内嵌捆绑包的更多信息，请参阅 `celix_target_embedded_bundle`。
+- PROPERTIES：配置属性列表，可以用于配置 Celix 框架和/或捆绑包。一般作为 EMBEDED_PROPERTIES使用，但若设置了 USE_CONFIG 选项，这将作为 RUNTIME_PROPERTIES使用。请查看框架库或捆绑包文档获取可用的配置选项。
+- EMBEDDED_PROPERTIES：嵌入到自动生成的 Celix 启动器（如果有的话）中的配置属性列表。
+- RUNTIME_PROPERTIES：添加到生成的config.properties文件中的配置属性列表。
 
 ```CMake
 add_celix_container(<celix_container_name>
@@ -446,7 +424,7 @@ add_celix_container(<celix_container_name>
 )
 ```
 
-Examples:
+示例：
 ```CMake
 #Creates a Celix container in ${CMAKE_BINARY_DIR}/deploy/simple_container which starts 3 bundles located at
 #${CMAKE_BINARY_DIR}/deploy/simple_container/bundles.
@@ -475,7 +453,7 @@ add_celix_container(simple_fat_container
 ```
 
 ## celix_container_bundles
-Add a selection of bundles to the Celix container.
+将一些捆绑包添加到给定 Celix 容器中。
 
 ```CMake
 celix_container_bundles(<celix_container_target_name>
@@ -489,30 +467,27 @@ celix_container_bundles(<celix_container_target_name>
 )
 ```
 
-Example:
+示例：
 ```CMake
 celix_container_bundles(my_container Celix::shell Celix::shell_tui)
 ```
 
-The selection of  bundles are (if configured) copied to the container build dir and
-are added to the configuration properties so that they are installed and started when the Celix container is executed.
+所选捆绑包（如果已配置）会被复制到容器构建目录，并添加到配置属性中，以便在执行 Celix 容器时进行安装和启动。
 
-The Celix framework supports 7 (0 - 6) run levels. Run levels can be used to control the start and stop order of bundles.
-Bundles in run level 0 are started first and bundles in run level 6 are started last.
-When stopping bundles in run level 6 are stopped first and bundles in run level 0 are stopped last.
-Within a run level the order of configured decides the start order; bundles added earlier are started first.
+Celix 框架支持7个（从0到6）运行级别。运行级别可以用来控制捆绑包的启停顺序。
+运行级别0的捆绑包最先启动，运行级别6捆绑包最后启动。
+当框架停止时，运行级别6的捆绑包最先停止，运行级别0的捆绑包最后停止。
+在一个运行级别内，配置的顺序决定了启动顺序；先添加的捆绑包先启动。
 
-Optional Arguments:
-- LEVEL: The run level for the added bundles. Default is 3.
-- INSTALL: If this option is present, the bundles will only be installed instead of the default install and start.
-  The bundles will be installed after all bundle in LEVEL 0..6 are installed and started.
-- COPY: If this option is present, the bundles will be copied to the container build dir. This option overrides the
-  NO_COPY option used in the add_celix_container call.
-- NO_COPY: If this option is present, the install/start bundles will be configured using a absolute path to the
-  bundle. This option overrides optional COPY option used in the add_celix_container call.
+可选参数：
+- LEVEL：添加捆绑包的运行级别。默认为3级。
+- INSTALL：若存在此选项，则捆绑包只会被安装，而非默认的安装并启动。
+  它们将在所有运行级别为0到6的捆绑包安装并启动后安装。
+- COPY：若设置了此选项，捆绑包将被复制到容器构建目录。此选项覆盖了在 add_celix_container 调用中使用的 NO_COPY 选项。
+- NO_COPY：若设置了此选项，容器将使用绝对路径安装/启动捆绑包。此选项覆盖了在 add_celix_container 调用中可选使用的 COPY 选项。
 
 ## celix_container_embedded_bundles
-Embed a selection of bundles to the Celix container.
+将一些捆绑包嵌入到给定的 Celix 容器中。
 
 ```CMake
 celix_container_embedded_bundles(<celix_container_target_name>
@@ -524,31 +499,28 @@ celix_container_embedded_bundles(<celix_container_target_name>
 )
 ```
 
-Example:
+示例：
 ```CMake
 celix_container_embedded_bundles(my_container Celix::shell Celix::shell_tui)
 ```
 
-The selection of bundles are embedded in the container executable using the
-`celix_target_embedded_bundle` Celix CMake command and are added to the configuration properties so that they are
-installed and started when the Celix container is executed.
+使用 `celix_target_embedded_bundle` CMake命令将一组捆绑包嵌入到容器可执行文件中，并将其添加到配置属性中，以便在执行Celix容器时进行安装和启动。
 
-See `celix_target_embedded_bundle` for how bundle is embedded in a executable.
+请参阅 `celix_target_embedded_bundle` 以了解如何在可执行文件中嵌入捆绑包。
 
-The Celix framework supports 7 (0 - 6) run levels. Run levels can be used to control the start and stop order of bundles.
-Bundles in run level 0 are started first and bundles in run level 6 are started last.
-When stopping bundles in run level 6 are stopped first and bundles in run level 0 are stopped last.
-Within a run level the order of configured decides the start order; bundles added earlier are started first.
+Celix 框架支持7个（从0到6）运行级别。运行级别可以用来控制捆绑包的启停顺序。
+运行级别0的捆绑包最先启动，运行级别6捆绑包最后启动。
+当框架停止时，运行级别6的捆绑包最先停止，运行级别0的捆绑包最后停止。
+在一个运行级别内，配置的顺序决定了启动顺序；先添加的捆绑包先启动。
 
-Optional Arguments:
-- LEVEL: The run level for the added bundles. Default is 3.
-- INSTALL: If this option is present, the bundles will only be installed instead of the default install and start.
-  The bundles will be installed after all bundle in LEVEL 0..6 are installed and started.
+可选参数:
+- LEVEL: 添加捆绑包的运行级别。默认为3级。
+- INSTALL：若存在此选项，则捆绑包只会被安装，而非默认的安装并启动。
+  它们将在所有运行级别为0到6的捆绑包安装并启动后安装。
 
 ## celix_container_properties
-Add the provided properties to the target Celix container config properties.
-If the USE_CONFIG option is used these configuration properties will be added to the 'config.properties' file else they
-will be added to the generated Celix launcher.
+将提供的属性添加到目标Celix容器配置属性中。
+如果设置了USE_CONFIG选项，这些配置属性将被添加到'config.properties'文件中，否则它们将被添加到生成的Celix启动器中。
 
 ```CMake
 celix_container_properties(<celix_container_target_name>
@@ -559,8 +531,8 @@ celix_container_properties(<celix_container_target_name>
 ```
 
 ## celix_container_embedded_properties
-Add the provided properties to the target Celix container config properties.
-These properties will be embedded into the generated Celix launcher.
+将所提供的属性添加到目标Celix容器配置属性中。
+这些属性将被嵌入到生成的Celix启动器中。
 
 ```CMake
 celix_container_embedded_properties(<celix_container_target_name>
@@ -571,8 +543,8 @@ celix_container_embedded_properties(<celix_container_target_name>
 ```
 
 ## celix_container_runtime_properties
-Add the provided properties to the target Celix container config properties.
-These properties will be added to the config.properties in the container build dir. 
+将提供的属性添加到目标Celix容器配置属性中。
+这些属性将被添加到容器构建目录下的config.properties文件中。
 
 ```CMake
 celix_container_runtime_properties(<celix_container_target_name>
@@ -582,15 +554,14 @@ celix_container_runtime_properties(<celix_container_target_name>
 )
 ```
 
-# Celix CMake commands for generic CMake targets
-Celix provides several CMake commands that operate on the generic CMake targets (executable, shared library, etc). 
+# 用于通用CMake目标的Celix CMake命令
+Celix提供了几个CMake命令，可在通用CMake目标（如可执行文件，共享库等）上进行操作。
 
-Celix CMake commands for generic CMake target will always use the keyword signature (`PRIVATE`, `PUBLIC`, `INTERFACE`) 
-version for linking, adding sources, etc. This means that these command will not work on targets created with
-an "all-plain" CMake version command.
+Celix的CMake命令将始终使用带关键字签名（`PRIVATE`，`PUBLIC`，`INTERFACE`）版本的CMake命令进行链接、添加源文件等操作。
+这意味着这些命令无法被用在由"all-plain" CMake 命令所创建的目标上。
 
 ## add_celix_bundle_dependencies
-Add bundles as dependencies to a cmake target, so that the bundle zip files will be created before the cmake target.
+将指定捆绑包添加为 CMake 目标的依赖项，这样在该目标之前将创建这些捆绑包的 zip 文件。
 
 ```CMake
 add_celix_bundle_dependencies(<cmake_target>
@@ -603,7 +574,7 @@ add_celix_bundle_dependencies(my_exec my_bundle1 my_bundle2)
 ```
 
 ## celix_target_embedded_bundle
-Embeds a Celix bundle into a CMake target.
+将 Celix 捆绑包嵌入到 CMake 目标对应的二进制文件中。
 
 ```CMake
 celix_target_embedded_bundle(<cmake_target>
@@ -612,60 +583,52 @@ celix_target_embedded_bundle(<cmake_target>
         )
 ```
 
-Example:
+示例：
 ```CMake
 celix_target_embedded_bundle(my_executable
         BUNDLE Celix::shell
         NAME celix_shell
         )
-# result in the symbols:
+# 以下符号：
 # - celix_embedded_bundle_celix_shell_start
 # - celix_embedded_bundle_celix_shell_end
 # - celix_embedded_bundles = "embedded://celix_shell"
-# to be added to `my_executable`
+# 将被添加到 `my_executable`
 ```
 
-The Celix bundle will be embedded into the CMake target between the symbols: `celix_embedded_bundle_${NAME}_start` and
-`celix_embedded_bundle_${NAME}_end`.
+Celix 捆绑包将会被嵌入到 CMake 目标对应的可执行文件中，且位于符号`celix_embedded_bundle_${NAME}_start`和`celix_embedded_bundle_${NAME}_end`之间。
 
-Also a `const char * const` symbol with the name `celix_embedded_bundles` will be added or updated containing a `,`
-seperated list of embedded Celix bundle urls. The url will be: `embedded://${NAME}`.
+另外还会添加或更新一个名为`celix_embedded_bundles`的`const char * const`符号，其中包含一个由`,`分隔的内嵌 Celix 捆绑包 URL 列表。
+URL格式为：`embedded://${NAME}`。
 
-For Linux the linking flag `--export-dynamic` is added to ensure that the previous mentioned symbols can be retrieved
-using `dlsym`.
+在Linux上，使用链接标志 `--export-dynamic` 以确保上述符号可以通过 `dlsym` 访问。
 
-Mandatory Arguments:
-- BUNDLE: The bundle target or bundle file (absolute path) to embed in the CMake target.
+必要的参数:
+- BUNDLE: 要嵌入到指定可执行文件的捆绑包目标或捆绑包文件绝对路径。
 
-Optional Arguments:
-- NAME: The name to use when embedding the Celix bundle. This name is used in the _start and _end symbol, but also
-  for the embedded bundle url.
-  For a bundle CMake target the default is the bundle symbolic name and for a bundle file the default is the
-  bundle filename without extension. The NAME must be a valid C identifier.
+可选的参数：
+- NAME: 内嵌捆绑包名称。这个名称用于生成 _start 和 _end 符号以及内嵌捆绑包的 URL。
+  对于捆绑包的 CMake 目标，默认为捆绑包符号名，对于捆绑包文件，默认为不含扩展名的捆绑包文件名。NAME 必须是一个有效的 C 语言标识符。
 
-Bundles embedded in an executable can be installed/started using the bundle url: "embedded://${NAME}" in
-combination with `celix_bundleContext_installBundle` (C) or `celix::BundleContext::installBundle` (C++).
-All embedded bundle can be installed using the framework utils function
-`celix_framework_utils_installEmbeddedBundles` (C) or `celix::installEmbeddedBundles` (C++).
+可以使用`celix_bundleContext_installBundle` (C) 或 `celix::BundleContext::installBundle` (C++) 来安装/启动由内嵌捆绑包URL（格式为"embedded://${NAME}"）指定的捆绑包。
+也可以使用框架工具函数 `celix_framework_utils_installEmbeddedBundles` (C) 或 `celix::installEmbeddedBundles` (C++) 来安装可执行文件中的全部内嵌捆绑包。
 
 ## celix_target_embedded_bundles
-Embed multiple Celix bundles into a CMake target.
+将多个 Celix 捆绑包嵌入到 CMake 目标对应的二进制文件中。
 
 ```CMake
 celix_target_embedded_bundles(<cmake_target> [<bundle1> <bundle2> ...])
 ```
 
-Example:
+示例：
 ```CMake
 celix_target_embedded_bundles(my_executable Celix::shell Celix::shell_tui)
 ```
 
-The bundles will be embedded using their symbolic name if the bundle is a CMake target or their filename (without
-extension) if the bundle is a file (absolute path).
+若捆绑包为 CMake 目标，则使用捆绑包符号名作为内嵌捆绑包名称；若捆绑包为文件，则使用不含扩展名的捆绑包文件名作为内嵌捆绑包名称。
 
 ## celix_target_bundle_set_definition
-Add a compile-definition with a set of comma seperated bundles paths to a target and also adds the bundles as 
-dependency to the target.
+为给定目标定义一个捆绑包集合，并为该集合新增一个编译宏定义（内容为逗号分割的捆绑包路径列表），并将该集合中的捆绑包全部添加为给定目标的依赖项。
 
 ```CMake
 celix_target_bundle_set_definition(<cmake_target>
@@ -674,36 +637,34 @@ celix_target_bundle_set_definition(<cmake_target>
         )
 ```
 
-Example:
+示例：
 ```CMake
 celix_target_bundle_set_definition(test_example NAME TEST_BUNDLES Celix::shell Celix::shell_tui)
 ```
 
-The compile-definition will have the name `${NAME}` and will contain a `,` separated list of bundle paths.
-The bundle set can be installed using the Celix framework util function `celix_framework_utils_installBundleSet` (C)
-or `celix::installBundleSet` (C++).
+新增编译宏名称为`${NAME}`，其内容为逗号分隔的捆绑包路径列表。
+可使用Celix框架工具函数 `celix_framework_utils_installBundleSet`（C） 或 `celix::installBundleSet`（C++）来安装该捆绑包集合。
 
-Adding a compile-definition with a set of bundles can be useful for testing purpose.
+捆绑包集合编译宏对于测试来说很有用。
 
 ## celix_target_hide_symbols
-Configure the symbol visibility preset of the provided target to hidden.
+将给定目标的符号可见性预设为隐藏。
 
-This is done by setting the target properties C_VISIBILITY_PRESET to hidden, the CXX_VISIBILITY_PRESET to hidden and
-VISIBILITY_INLINES_HIDDEN to ON.
+这是通过将目标属性 C_VISIBILITY_PRESET 设为隐藏，CXX_VISIBILITY_PRESET 设为隐藏以及 VISIBILITY_INLINES_HIDDEN 设为 ON 来完成的。
 
 ```CMake
 celix_target_hide_symbols(<cmake_target> [RELEASE] [DEBUG] [RELWITHDEBINFO] [MINSIZEREL])
 ```
 
-Optional arguments are:
-- RELEASE: hide symbols for the release build type
-- DEBUG: hide symbols for the debug build type
-- RELWITHDEBINFO: hide symbols for the relwithdebinfo build type
-- MINSIZEREL: hide symbols for the minsizerel build type
+可选参数包括：
+- RELEASE：隐藏发布构建类型的符号
+- DEBUG：隐藏调试构建类型的符号
+- RELWITHDEBINFO：隐藏带调试信息的发布构建类型的符号
+- MINSIZEREL：隐藏最小尺寸发布构建类型的符号
 
-If no optional arguments are provided, the symbols are hidden for all build types.
+如果未提供可选参数，则对所有构建类型隐藏符号。
 
-Example:
+示例：
 ```CMake
 celix_target_hide_symbols(my_bundle RELEASE MINSIZEREL)
 ```
