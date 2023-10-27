@@ -657,12 +657,12 @@ celix_target_hide_symbols(<cmake_target> [RELEASE] [DEBUG] [RELWITHDEBINFO] [MIN
 ```
 
 可选参数包括：
-- RELEASE：隐藏发布构建类型的符号
-- DEBUG：隐藏调试构建类型的符号
-- RELWITHDEBINFO：隐藏带调试信息的发布构建类型的符号
-- MINSIZEREL：隐藏最小尺寸发布构建类型的符号
+- RELEASE：为发布构建隐藏符号
+- DEBUG：为调试构建隐藏符号
+- RELWITHDEBINFO：为带调试信息的发布构建隐藏符号
+- MINSIZEREL：为最小尺寸发布构建隐藏符号
 
-如果未提供可选参数，则对所有构建类型隐藏符号。
+如果未提供可选参数，则为所有类型构建隐藏符号。
 
 示例：
 ```CMake

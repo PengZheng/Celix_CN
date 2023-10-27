@@ -76,8 +76,8 @@ Apache Celix 还提供了一些纯 C++ 的库和捆绑包。虽然这些 C++ 库
   * [Apache Celix C 语言模式](c_patterns_CN.md)
 * 框架
   * [Apache Celix 捆绑包](bundles_CN.md)
-  * [Apache Celix 服务](services.md)
-  * [Apache Celix 服务组件](components.md)
+  * [Apache Celix 服务](services_CN.md)
+  * [Apache Celix 服务组件](components_CN.md)
   * [Apache Celix 框架](framework.md)
   * [Apache Celix 容器](containers.md)
   * [Apache Celix 设计模式](patterns.md)
