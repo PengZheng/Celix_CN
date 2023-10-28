@@ -313,7 +313,7 @@ add_celix_container(test_container BUNDLES
 # `celix::lb` shell 命令
 要交互式查看已安装的捆绑包，可以使用 `celix::lb` （list bundles）shell 命令。
 
-支持的 `lb` 命令行示例包括：
+支持的`lb`命令行用法示例：
 - `celix::lb` - 显示已安装捆绑包概览，包括捆绑包id、捆绑包状态、捆绑包名以及捆绑包组。
 - `lb` - 同 `celix::lb`（只要没有其他命名冲突的 `lb` 命令）。
 - `lb -s` - 同 `celix::lb`，但显示捆绑包符号名而非捆绑包名。
