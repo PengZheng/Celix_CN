@@ -307,4 +307,4 @@ Apache Celix 框架可通过框架属性进行配置。
 | CELIX_FRAMEWORK_AUTO_START_5                                 | ""        | 在框架启动后要安装和启动的包。可以提供由空格分隔的多个包。                                                         |
 | CELIX_AUTO_INSTALL                                           | ""        | 在框架启动后要安装的捆绑包。可以提供由空格分隔的多个捆绑包。                                                        |
 | CELIX_LOGGING_DEFAULT_ACTIVE_LOG_LEVEL                       | "info"    | 为创建的日志服务设置的默认活动日志级别。可能的值有"trace"、"debug"、"info"、"warning"、"error"和"fatal"。            |
-| CELIX_ALLOWED_PROCESSING_TIME_FOR_SCHEDULED_EVENT_IN_SECONDS | "2"       | 预定事件的允许处理时间（以秒为单位），如果处理时间更长，将记录一条警告消息。                                                |
+| CELIX_ALLOWED_PROCESSING_TIME_FOR_SCHEDULED_EVENT_IN_SECONDS | "2"       | 计划任务事件的允许处理时间（以秒为单位），如果处理时间更长，将记录一条警告消息。                                              |
