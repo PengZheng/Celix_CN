@@ -27,8 +27,8 @@ and in-process service-oriented programming.
 Apache Celix is inspired by the [OSGi specification](https://www.osgi.org/) adapted for C and C++.
 
 ## Documentation
-- [Building Apache Celix](documents/building/README.md)/[构建 Apache Celix](documents/building/README_CN.md)
-- [Apache Celix Intro](documents/README.md)/[Apache Celix 介绍](documents/README_CN.md)
+- [Building Apache Celix](documents/building/README.md)([构建 Apache Celix](documents/building/README_CN.md))
+- [Apache Celix Intro](documents/README.md)([Apache Celix 介绍](documents/README_CN.md))
 
 ## C++ Usage
 
