@@ -536,46 +536,39 @@ add_celix_bundle(my_bundle
 add_library(celix::my_bundle ALIAS my_bundle)
 ```
 
-## Branch naming
+## 分支命名规则
 
-- Prefix feature branches with `feature/`, hotfix branches with `hotfix/`, bugfix branches with `bugfix/` 
-  and release branches with `release/`.
-- If you are working on an issue, prefix the branch name with the issue number. E.g., `feature/1234-add-feature`.
-- Hotfix branches are for urgent fixes that need to be applied as soon as possible.
-- Use short and descriptive branch names.
+- 用 `feature/` 前缀表示功能分支，用 `hotfix/` 前缀表示热修复分支，用 `bugfix/` 前缀表示修复缺陷的分支，`release/` 前缀表示发布分支。
+- 如果您正在处理一个问题，请使用问题编号作为分支名的前缀。例如，`feature/1234-add-feature`。
+- 热修复分支主要用于需要尽快应用的紧急修复。
+- 使用简短且描述性强的分支名。
 
-## Commit Messages
-    
-- Utilize the imperative mood when writing commit messages (e.g., "Add feature" instead of "Adds feature" 
-  or "Added feature"). This style aligns with git's auto-generated messages for merge commits or revert actions.
-- Ensure that commit messages are descriptive and provide meaningful context. 
-- Keep the first line of the commit message concise, ideally under 50 characters. 
-  This summary line serves as a quick overview of the change and should be easy to read in git logs. 
-- If more context is needed, separate the summary line from the body with a blank line. 
-  The body can provide additional details, explanations, or reasoning behind the changes. 
-  Aim to keep each line of the commit message body wrapped at around 72 characters for optimal readability.
-- Use bullet points, numbered lists, or other formatting conventions when listing multiple changes or points in the 
-  commit message body to improve readability.
-- When applicable, reference related issues, bug reports, or pull requests in the commit message body to 
-  provide additional context and establish connections between the commit and the larger project.
-  - If your commit fixes, closes, or resolves an issue, use one of these keywords followed by the issue number 
-    (e.g., "fixes #42", "closes #42", or "resolves #42"). 
-  - If you want to reference an issue without closing it, simply mention the issue number 
-    (e.g., "related to #42" or "#42").
+## 提交信息
 
-## Benchmarking
+- 在编写提交消息时，请使用祈使语气 (例如 "Add feature" 而不是 "Adds feature" 或 "Added feature")。这种风格与 git 自动生成的合并提交或还原操作的消息相符。
+- 确保提交信息具有描述性并提供有意义的上下文。
+- 保持提交信息的第一行简洁，理想情况下在 50 个字符以内。
+  这一概要行作为对更改的快速概述，应保持在git日志条目中易于阅读。
+- 若需提供更多的上下文，用空行将概要行与主体部分分隔开。
+  主体部分可以提供有关更改背后的详细信息和解释。
+  为了达到最佳的可读性，尽量确保提交消息主体的每行都尽可能在 72 个字符处换行。
+- 当在提交消息主体中列出多个更改或要点时，使用要点列表，编号列表或其他格式约定以提高可读性。
+- 如果适用，可以在提交消息主体中引用相关的问题、错误报告或拉取请求，以提供额外的上下文并将本次提交与更大的项目关联起来。
+  - 如果本次提交修复了、关闭了或解决了一个问题，使用这些关键词之一，再后跟问题编号(例如 "fixes #42"，"closes #42" 或 "resolves #42")。
+  - 如果你想引用一个问题，但不关闭它，就只需要提及问题编号(例如 "related to #42" 或 "#42")。
 
-- When needed, use benchmarking to measure performance.
-- Use the Google Benchmark framework for benchmarking.
+## 基准测试
 
-## Code Quality
+- 需要时，使用基准测试来测量性能。
+- 使用 Google Benchmark 框架进行基准测试。
 
-- New code should be reviewed through a pull request and no direct commits on the master branch are allowed.
-  - At least 1 reviewer should review the code.
-- Hotfix pull request can be merged first and reviewed later, the rest is reviewed first and merged later.
-- Unit tests should be written for all new code. 
-- Code coverage should be measured and strive for a minimum of 95% code coverage.
-- For existing code, maintain or increase the code coverage.
-- Code should be checked for memory leaks using AddressSanitizer.
-- Coverity scan are done on the master on a regular basis. Ideally new coverity issues should be fixed as soon as 
-  possible.
+## 代码质量
+
+- 新代码应通过拉取请求进行审查，不允许在 master 分支上直接提交。
+  - 至少应有1位审查者审查代码。
+- 热修复的拉取请求可以先合并后审查，其余的需先审查后合并。
+- 所有新代码都应编写单元测试。
+- 应测量代码覆盖率，并力争达到至少 95% 的代码覆盖率。
+- 对于现有代码，应维持或提高代码覆盖率。
+- 代码应使用 AddressSanitizer 检查内存泄漏。
+- 应定期在 master 分支上执行 Coverity 扫描。理想情况下，新的 Coverity 问题应尽快修复。
